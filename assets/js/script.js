@@ -93,8 +93,42 @@ fetch(dailyRequestUrl)
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
+      console.log(data.list);
      
+//loop thru the entire record and extract the first unique date record.
+
+const dailyWeatherRecords= data.list;
+
+const uniqueDates = [];
+const uniqueDateDailyRecords = [];
+
+for (const dailyrecord of dailyWeatherRecords) {
+
+    console.log(dailyrecord.dt);
+
+    const uniquedate = dayjs.unix(dailyrecord.dt).format('MMM D, YYYY');
+
+    console.log(uniquedate);
+   
+    if (!uniqueDates.includes(uniquedate)) {
+        console.log("TRUE");
+        uniqueDates.push(uniquedate);
+        uniqueDateDailyRecords.push(dailyrecord);
+    }
+
+    if (uniqueDateDailyRecords.length === 5) {
+        break; // Stop once we have 5 unique records
+    }
+    
+}
+
+console.log("Display 5 unique date records")
+console.log(uniqueDates);
+console.log(uniqueDateDailyRecords.length);
+console.log(uniqueDateDailyRecords);
+
+
+// Loop logic end
 
 
     });
@@ -112,3 +146,5 @@ $(document).ready(function () {
     // printWeatherData();
 
 });
+
+
