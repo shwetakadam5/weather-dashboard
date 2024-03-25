@@ -20,7 +20,48 @@
     <h1 class="display-3">Weather Board</h1>    
   </header>
 <!-- Start of code -->
+<main class="container-fluid">
+    <div class="row">
+        <div class="col-md col-xl-4">
+        <!-- Displays the search form and history -->
+        <div class="card mb-3">        
+            <!-- <div class="card-body"> -->  
+                <h4 class="card-text">
+                    Search for a City:
+                </h4>
+            <!-- </div> -->
+            <form id="search-form">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <input
+                          id="city-name-input"
+                          type="text"
+                          class="form-control"
+                          placeholder="City Name"
+                          aria-label="City Name"
+                        />
+                      </li>
+                      <!-- <li class="list-group-item">
+                        
+                        </li> -->                
+                </ul>
+                 <div class="card-footer">
+                    <button type="submit" class="btn btn-primary form-control">
+                      Search
+                    </button>
+                  </div>
+            </form>
+        </div>
 
+        </div> <!-- col-md col-xl-4 div end-->
+
+        <div class="col-md col-xl-8">
+            <!-- Displays the weather details -->
+        </div>
+
+    </div>
+
+</main>
 
 <!-- End of code -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
