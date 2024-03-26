@@ -2,6 +2,7 @@
 const searchFormEl = $('#search-form');
 const cityNameInputEl = $('#city-name-input');
 const API_KEY = "6afdca3269d40e485ee98de1af3ed1db";
+const redirectUrl = './404.html';
 
 const searchContainerEl = document.querySelector('#search-container');
 
@@ -64,7 +65,13 @@ function handleSearchFormSubmit(event) {
 
     fetch(requestUrl)
         .then(function (response) {
+            if(response.status == 404){
+                // location.replace(redirectUrl);
+                alert(`Error Msg: ${response.statusText}. Redirecting to error page.`);
+                location.href=(redirectUrl);
+              }else{
             return response.json();
+              }
         })
         .then(function (data) {
             console.log(data);
@@ -158,6 +165,7 @@ function handleSearchFormSubmit(event) {
             printWeatherData();
             cityNameInputEl.val('');            
         });
+        
 
 }
 
