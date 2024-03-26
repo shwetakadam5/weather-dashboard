@@ -31,7 +31,7 @@
                 </h4>
             <!-- </div> -->
             <form id="search-form">
-                <ul class="list-group list-group-flush">
+                <ul id= "search-container" class="list-group list-group-flush">
                     <li class="list-group-item">
                         <input
                           id="city-name-input"
@@ -41,25 +41,52 @@
                           aria-label="City Name"
                         />
                       </li>
-                      <!-- <li class="list-group-item">
-                        
-                        </li> -->                
+                       <li class="list-group-item">
+                        <button id="primary-submit" type="submit" class="btn btn-primary form-control">Search</button>                        
+                        </li>                                       
                 </ul>
-                 <div class="card-footer">
+                 <!-- <div class="card-footer">
                     <button type="submit" class="btn btn-primary form-control">
                       Search
                     </button>
-                  </div>
+                  </div> -->
             </form>
         </div>
 
         </div> <!-- col-md col-xl-4 div end-->
 
         <div class="col-md col-xl-8">
-            <!-- Displays the weather details -->
+            <!-- Displays the weather details Start -->
+            <div class="column swim-lanes text-center justify-content-between">
+                <div class="col-12 col-lg-4 d-flex flex-column">
+                  <div id="to-do" class="card border-light mb-3 lane flex-grow-1">
+                    <div class="card-header bg-white">
+                      <h2 class="card-title mb-1">Current Weather</h2>
+                    </div>
+                    <div class="card-body bg-light">
+                      <div id="current-weather"></div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4 d-flex flex-column">
+                  <div id="in-progress" class="card border-light mb-3 lane flex-grow-1">
+                    <div class="card-header bg-white">
+                      <h2 class="card-title mb-1">5 Day Forecast :</h2>
+                    </div>
+                    <div class="card-body bg-light">
+                      <div id="daily-weather"></div>
+                    </div>
+                  </div>
+                  </div>
+                  
+              </div>
+
+            <!-- Displays the weather details END-->
         </div>
 
     </div>
+
+    <div class="row"></div>
 
 </main>
 
