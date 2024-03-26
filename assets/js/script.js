@@ -154,6 +154,9 @@ function handleSearchFormSubmit(event) {
                 cityNames.push(searchHistoryDetails);
                 saveSearchHistoryToStorage(cityNames);
             }    
+
+            printWeatherData();
+            cityNameInputEl.val('');            
         });
 
 }
@@ -161,24 +164,25 @@ function handleSearchFormSubmit(event) {
 
 function printWeatherData() {
     const searchHistory = readSearchHistoryFromStorage();
-  
-    // // Empty existing weather info out of the lanes
-    // const currentWeatherList = $('#current-weather');
-    // currentWeatherList.empty();
-  
-    // const dailyWeatherList = $('#daily-weather');
-    // dailyWeatherList.empty();
-  
+    
+    
+    for (let historyObj of searchHistory) {
+        $("#" + historyObj.id).remove(); 
+
+    }
       
     // ? Loop through projects and create project cards for each status
     for (let historyObj of searchHistory) {
       
         // <li class="list-group-item">
         // <button id="primary-submit" type="submit" class="btn btn-primary form-control">Search</button>                        
-        // </li>  
+        // </li>    
+    
 
         const historyEl = document.createElement('li');
+
         historyEl.classList = 'list-group-item';
+        historyEl.setAttribute('id', historyObj.id);
 
         const historyBtnEl = document.createElement('button');
         historyBtnEl.setAttribute('id', historyObj.id);
