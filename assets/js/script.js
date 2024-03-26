@@ -1,63 +1,64 @@
-// Get the references of DOM Elements
-const searchFormEl = $('#search-form');
-const cityNameInputEl = $('#city-name-input');
 const API_KEY = "6afdca3269d40e485ee98de1af3ed1db";
 const redirectUrl = './404.html';
 
+// Get the references of DOM Elements
+const searchFormEl = $('#search-form');
+const cityNameInputEl = $('#city-name-input');
 const searchContainerEl = document.querySelector('#search-container');
 
 
-// Accepts array of city names as search history, stringifys them, and saves them in localStorage.
+//  Function that saves the list/array of city names for search history to the local storage 
 function saveSearchHistoryToStorage(cities) {
     localStorage.setItem('cities', JSON.stringify(cities));
 }
 
-
+// Function that retrieves the cities from local storage and returns city list. If no cities in local storage then returns empty list.
 function readSearchHistoryFromStorage() {
 
     let cityNames = JSON.parse(localStorage.getItem('cities'));
-
-    // ? If no citynames were retrieved from localStorage, assign projects to a new empty array to push to later.
+  
     if (!cityNames) {
         cityNames = [];
     }
-
-    // ? Return the city names array either empty or with data in it whichever it was determined to be by the logic right above.
+   
     return cityNames;
 }
 
 
+// Function to handle search weather details based on the input city name. This function identifies if there is a new search or search from the history.
+// Once the weather details are retrieved , the weather information is displayed on the screen.
+// This function has two api calls 
+// https://api.openweathermap.org/data/2.5/weather?q=Melbourne,AU&appid=6afdca3269d40e485ee98de1af3ed1db
+// http://api.openweathermap.org/data/2.5/forecast?lat=-37.8547&lon=145.1853&appid=6afdca3269d40e485ee98de1af3ed1db
 
-// Accepts array of city names as search history, stringifys them, and saves them in localStorage.
-function saveSearchHistoryToStorage(cities) {
-    localStorage.setItem('cities', JSON.stringify(cities));
-}
-
-//  Adds a weather details to local storage and prints the weather data
 function handleSearchFormSubmit(event) {
-
+    
     event.preventDefault();
     let cityName;
     //  Read user input from the form
-    if(cityNameInputEl.val().trim() != ""){
-    cityName = cityNameInputEl.val().trim();
-    console.log(cityName);
-    }else {
-    console.log(this);
+    if (cityNameInputEl.val().trim() != "") {
+
+        cityName = cityNameInputEl.val().trim();
+        console.log(cityName);
+
+    } else {
+          //  Read city name from search button created from search history
+        console.log(this);
         cityName = $(this).attr('value');
         console.log("Extracting city name from search history button")
         console.log(cityName);
+    }    
 
-    }
-    console.log(API_KEY);
+    const params = new URLSearchParams(); 
+    
+    //Building query parameters as : ?q={cityName}&appid={API_KEY}'&units=imperial;
 
-    const params = new URLSearchParams();
     params.append(`q`, `${cityName}`);
-    params.append(`units`, `imperial`);
-    // Units : In Metric -> Temp : celcius ,speed : meter per second And In Imperial -> Temp : Fahrenheit , Speed : miles per hour MPH
+     // Units : In Metric -> Temp : celcius ,speed : meter per second And In Imperial -> Temp : Fahrenheit , Speed : miles per hour MPH
+    params.append(`units`, `imperial`);   
     params.append(`appid`, `${API_KEY}`);
 
-    //   ?q={cityName}&appid={API_KEY}'&units=imperial;
+   
 
     const requestUrl = new URL('https://api.openweathermap.org/data/2.5/weather');
     requestUrl.search = params.toString();
@@ -65,45 +66,46 @@ function handleSearchFormSubmit(event) {
 
     fetch(requestUrl)
         .then(function (response) {
-            if(response.status == 404){
-                // location.replace(redirectUrl);
+
+            //If response is 404 redirecting to the error page.
+            if (response.status == 404) {                
                 alert(`Error Msg: ${response.statusText}. Redirecting to error page.`);
-                location.href=(redirectUrl);
-              }else{
-            return response.json();
-              }
+                location.href = (redirectUrl);
+            } else {
+                return response.json();
+            }
+
         })
         .then(function (data) {
+
             console.log(data);
             console.log(data.coord);
             console.log(data.coord.lon);
             console.log(data.coord.lat);
             console.log(data.dt);
 
-            const unixFormat = dayjs.unix(data.dt).format('MMM D, YYYY, hh:mm:ss a');
+            const unixFormat = dayjs.unix(data.dt).format('MMM D, YYYY, hh:mm:ss a');            
             console.log(unixFormat);
-
             console.log(data.name);
             console.log(data.main.temp);
             console.log(data.wind.speed);
             console.log(data.main.humidity);
 
-
-
-            // Start of new fetch request 
+            // Start of the fetch request for 5 day weather forecast.
             //  Read needed data from the response
             const locationLongitude = data.coord.lon;
             const locationLatitude = data.coord.lat;
+
             console.log(locationLongitude);
             console.log(locationLatitude);
 
             const params = new URLSearchParams();
+             //Building query parameters as : ?lat=-37.8547&lon=145.1853&appid=6afdca3269d40e485ee98de1af3ed1db
             params.append(`lat`, `${locationLatitude}`);
             params.append(`lon`, `${locationLongitude}`);
             params.append(`units`, `imperial`);
-
             params.append(`appid`, `${API_KEY}`);
-            //   ?lat=-37.8547&lon=145.1853&appid=6afdca3269d40e485ee98de1af3ed1db
+           
 
             const dailyRequestUrl = new URL('http://api.openweathermap.org/data/2.5/forecast');
             dailyRequestUrl.search = params.toString();
@@ -152,7 +154,7 @@ function handleSearchFormSubmit(event) {
             const cityNames = readSearchHistoryFromStorage();
 
             //logic to ensure that duplicate city names are not in the search history
-            if(!cityNames.map(item => item.cityname).includes(data.name)){
+            if (!cityNames.map(item => item.cityname).includes(data.name)) {
                 console.log(`City Value NOT present in the storage`);
                 const searchHistoryDetails = {
                     id: crypto.randomUUID(),
@@ -160,32 +162,29 @@ function handleSearchFormSubmit(event) {
                 };
                 cityNames.push(searchHistoryDetails);
                 saveSearchHistoryToStorage(cityNames);
-            }    
+            }
 
             printWeatherData();
-            cityNameInputEl.val('');            
+            cityNameInputEl.val('');
         });
-        
 
 }
 
-
+// Function to render/display the current weather details along with the search history buttons
 function printWeatherData() {
     const searchHistory = readSearchHistoryFromStorage();
-    
-    
+
     for (let historyObj of searchHistory) {
-        $("#" + historyObj.id).remove(); 
+        $("#" + historyObj.id).remove();
 
     }
-      
+
     // ? Loop through projects and create project cards for each status
     for (let historyObj of searchHistory) {
-      
+
         // <li class="list-group-item">
         // <button id="primary-submit" type="submit" class="btn btn-primary form-control">Search</button>                        
         // </li>    
-    
 
         const historyEl = document.createElement('li');
 
@@ -199,31 +198,21 @@ function printWeatherData() {
         historyBtnEl.textContent = "Search by " + historyObj.cityname;
         historyBtnEl.setAttribute('value', historyObj.cityname);
         historyEl.appendChild(historyBtnEl);
-    
+
         searchContainerEl.appendChild(historyEl);
-    
 
     }
-  
-    
-  }
+}
 
 //  Add event listener to the form element, listen for a submit event, and call the `handleSearchFormSubmit` function.
 searchFormEl.on('submit', handleSearchFormSubmit);
 
-
+//  Add event listener to the dynamically created button element, listen for a click event, and call the `handleSearchFormSubmit` function.
 searchFormEl.on('click', '.btn', handleSearchFormSubmit);
 
 //  When the document is ready, print the weather data to the screen 
 $(document).ready(function () {
-
-    // Define the method to fetch info from local storage and display
+    // Define the method to fetch weather information from local storage and display
     printWeatherData();
-
 });
 
-
-// TO be used URLS
-// https://api.openweathermap.org/data/2.5/weather?q=Melbourne,AU&appid=6afdca3269d40e485ee98de1af3ed1db
-// http://api.openweathermap.org/data/2.5/forecast?lat=-37.8547&lon=145.1853&appid=6afdca3269d40e485ee98de1af3ed1db
-//api.openweathermap.org/data/2.5/forecast/daily?lat=-37.8547&lon=145.1853&cnt=5&appid=6afdca3269d40e485ee98de1af3ed1db
