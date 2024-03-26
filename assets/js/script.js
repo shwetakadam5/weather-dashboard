@@ -36,11 +36,18 @@ function saveSearchHistoryToStorage(cities) {
 function handleSearchFormSubmit(event) {
 
     event.preventDefault();
-
+    let cityName;
     //  Read user input from the form
-    const cityName = cityNameInputEl.val().trim();
-
+    if(cityNameInputEl.val().trim() != ""){
+    cityName = cityNameInputEl.val().trim();
     console.log(cityName);
+    }else {
+    console.log(this);
+        cityName = $(this).attr('value');
+        console.log("Extracting city name from search history button")
+        console.log(cityName);
+
+    }
     console.log(API_KEY);
 
     const params = new URLSearchParams();
@@ -132,22 +139,21 @@ function handleSearchFormSubmit(event) {
                     // Loop logic end
                 });
 
-            // End of new fetch request
-
-            const searchHistoryDetails = {
-                id: crypto.randomUUID(),
-                cityname: data.name,
-            };
+            // End of new fetch request           
 
 
             const cityNames = readSearchHistoryFromStorage();
-            cityNames.push(searchHistoryDetails);
 
-            saveSearchHistoryToStorage(cityNames);
-
-
-
-
+            //logic to ensure that duplicate city names are not in the search history
+            if(!cityNames.map(item => item.cityname).includes(data.name)){
+                console.log(`City Value NOT present in the storage`);
+                const searchHistoryDetails = {
+                    id: crypto.randomUUID(),
+                    cityname: data.name,
+                };
+                cityNames.push(searchHistoryDetails);
+                saveSearchHistoryToStorage(cityNames);
+            }    
         });
 
 }
@@ -176,10 +182,10 @@ function printWeatherData() {
 
         const historyBtnEl = document.createElement('button');
         historyBtnEl.setAttribute('id', historyObj.id);
-        historyBtnEl.setAttribute('type', 'submit');
+        historyBtnEl.setAttribute('type', 'click');
         historyBtnEl.classList = 'btn btn-primary form-control';
         historyBtnEl.textContent = "Search by " + historyObj.cityname;
-        
+        historyBtnEl.setAttribute('value', historyObj.cityname);
         historyEl.appendChild(historyBtnEl);
     
         searchContainerEl.appendChild(historyEl);
@@ -192,6 +198,9 @@ function printWeatherData() {
 
 //  Add event listener to the form element, listen for a submit event, and call the `handleSearchFormSubmit` function.
 searchFormEl.on('submit', handleSearchFormSubmit);
+
+
+searchFormEl.on('click', '.btn', handleSearchFormSubmit);
 
 //  When the document is ready, print the weather data to the screen 
 $(document).ready(function () {
