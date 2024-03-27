@@ -5,8 +5,9 @@ const redirectUrl = './servererrorpage.html';
 const searchFormEl = $('#search-form');
 const cityNameInputEl = $('#city-name-input');
 const searchContainerEl = document.querySelector('#search-container');
-
 const currentWeatherContainerEl = document.querySelector('#current-weather');
+const dailyWeatherContainerEl = document.querySelector('#daily-weather');
+
 
 
 //  Function that saves the list/array of city names for search history to the local storage 
@@ -36,20 +37,21 @@ function readSearchHistoryFromStorage() {
 function handleSearchFormSubmit(event) {
     
     event.preventDefault();
+    
     let cityName;
 
-    let fetchedWeatherRecords = {
+    // let fetchedWeatherRecords = {
                
-        currentcity: "",
-        currentdate: "",
-        currenttemp: "",
-        currentwindspeed: "",
-        currenthumidity: "",
-        currentlongitude: "",
-        currentlatitude: "",
-        dailyforecast :[],
+    //     currentcity: "",
+    //     currentdate: "",
+    //     currenttemp: "",
+    //     currentwindspeed: "",
+    //     currenthumidity: "",
+    //     currentlongitude: "",
+    //     currentlatitude: "",
+    //     dailyforecast :[],
 
-    };
+    // };
     //  Read user input from the form
     if (cityNameInputEl.val().trim() != "") {
 
@@ -106,7 +108,7 @@ function handleSearchFormSubmit(event) {
             console.log(data.wind.speed);
             console.log(data.main.humidity);
 
-            fetchedWeatherRecords = {
+            let fetchedWeatherRecords = {
                
                 currentcity: data.name,
                 currentdate: unixFormat,
@@ -147,20 +149,39 @@ function handleSearchFormSubmit(event) {
                 .then(function (data) {
 
                     console.log(data.list);
+
+
+                   
+
+                    const dayWeatherRecords ={
+                        
+                        forecastdate: "",
+                        forecasttemp: "",
+                        forecastwindspeed: "",
+                        forecasthumidity: "",                      
+
+                    }
                     //loop thru the entire record and extract the first unique date record.
                     const dailyWeatherRecords = data.list;
                     const uniqueDates = [];
                     const uniqueDateDailyRecords = [];
 
                     for (const dailyrecord of dailyWeatherRecords) {
-                        console.log(dailyrecord.dt);
+                        // console.log(dailyrecord.dt);
                         const uniquedate = dayjs.unix(dailyrecord.dt).format('MMM D, YYYY');
-                        console.log(uniquedate);
+                        // console.log(uniquedate);
 
                         if (!uniqueDates.includes(uniquedate)) {
-                            console.log("TRUE");
+                            console.log("************************************************************");
                             uniqueDates.push(uniquedate);
-                            uniqueDateDailyRecords.push(dailyrecord);
+                             //start
+                          
+                            dayWeatherRecords.forecastdate = dailyrecord.dt;
+                            dayWeatherRecords.forecasthumidity = dailyrecord.main.humidity;
+                            dayWeatherRecords.forecasttemp =dailyrecord.main.temp;
+                            dayWeatherRecords.forecastwindspeed =dailyrecord.wind.speed;
+                            //end
+                            uniqueDateDailyRecords.push(dayWeatherRecords);
                         }
 
                         if (uniqueDateDailyRecords.length === 5) {
@@ -169,34 +190,38 @@ function handleSearchFormSubmit(event) {
 
                     }
 
-                    console.log("Display 5 unique date records")
-                    console.log(uniqueDates);
-                    console.log(uniqueDateDailyRecords.length);
-
+                    // console.log("Display 5 unique date records")
+                    // console.log(uniqueDates);
+                     
                     fetchedWeatherRecords.dailyforecast = uniqueDateDailyRecords;
-                    console.log(uniqueDateDailyRecords);
                     console.log(fetchedWeatherRecords);
+                    console.log(fetchedWeatherRecords.dailyforecast[0]);
+
+                    console.log("************************************************************");
 
                     // Loop logic end
+                    const cityNames = readSearchHistoryFromStorage();
+
+                    //logic to ensure that duplicate city names are not in the search history
+                    if (!cityNames.map(item => item.cityname).includes(fetchedWeatherRecords.currentcity)) {
+                        console.log(`City Value NOT present in the storage`);
+                        const searchHistoryDetails = {
+                            id: crypto.randomUUID(),
+                            cityname: fetchedWeatherRecords.currentcity,
+                        };
+                        cityNames.push(searchHistoryDetails);
+                        saveSearchHistoryToStorage(cityNames);
+                    }
+        
+                    printWeatherData(fetchedWeatherRecords);
+
+
                 });
 
             // End of new fetch request           
 
 
-            const cityNames = readSearchHistoryFromStorage();
-
-            //logic to ensure that duplicate city names are not in the search history
-            if (!cityNames.map(item => item.cityname).includes(data.name)) {
-                console.log(`City Value NOT present in the storage`);
-                const searchHistoryDetails = {
-                    id: crypto.randomUUID(),
-                    cityname: data.name,
-                };
-                cityNames.push(searchHistoryDetails);
-                saveSearchHistoryToStorage(cityNames);
-            }
-
-            printWeatherData(fetchedWeatherRecords);
+           
             cityNameInputEl.val('');
         });
 
@@ -212,7 +237,7 @@ function printWeatherData(fetchedWeatherRecords) {
         $("#" + historyObj.id).remove();
     }
 
-    
+    $('#current-weather').empty();    
 
     // ? Loop through search histpry and create search history buttons for each city
     for (let historyObj of searchHistory) {
@@ -259,6 +284,7 @@ function createWeatherCard(fetchedWeatherRecords) {
 
 </div>      */     
 
+ 
 if(fetchedWeatherRecords!=null){
           const weatherCardEl = document.createElement('div');
           weatherCardEl.classList = 'card weather-card my-3 text-black';
@@ -294,6 +320,65 @@ if(fetchedWeatherRecords!=null){
           weatherCardEl.appendChild(weatherCardHeaderEl);
           weatherCardEl.appendChild(weatherCardBodyEl);
           currentWeatherContainerEl.appendChild(weatherCardEl);
+console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+console.log(fetchedWeatherRecords);
+console.log(fetchedWeatherRecords.dailyforecast);
+
+          const dailyWeatherRecords =fetchedWeatherRecords.dailyforecast;
+
+          console.log(dailyWeatherRecords.length);
+         
+
+          for (let index = 0; index < dailyWeatherRecords.length; index++) {
+            const dayRecord = dailyWeatherRecords[index];
+            console.log(dayRecord);
+            console.log(dayRecord.forecastdate);
+            console.log(dayRecord.forecasthumidity);
+            console.log(dayRecord.forecasttemp);
+            console.log(dayRecord.forecastwindspeed);
+
+            const dailyweatherCardEl = document.createElement('div');
+            dailyweatherCardEl.classList = 'card weather-card my-3 text-black';
+           
+            const dailyweatherCardHeaderEl = document.createElement('div');
+            dailyweatherCardHeaderEl.classList = 'card-header h4';
+           
+            dailyweatherCardHeaderEl.textContent = '';
+             
+            const dailyweatherCardHeaderParaEl = document.createElement('p');
+            dailyweatherCardHeaderParaEl.classList ='card-text';
+            dailyweatherCardHeaderParaEl.textContent = dayRecord.forecastdate;
+  
+            const dailyweatherCardBodyEl = document.createElement('div');
+            dailyweatherCardBodyEl.classList ='card-body';
+  
+            const dailyweatherCardBodyTempEl = document.createElement('p');
+            dailyweatherCardBodyTempEl.classList ='card-text';
+            dailyweatherCardBodyTempEl.textContent =dayRecord.forecasttemp;
+            const dailyweatherCardBodyHumidityEl = document.createElement('p');
+            dailyweatherCardBodyHumidityEl.classList ='card-text';
+            dailyweatherCardBodyHumidityEl.textContent =dayRecord.forecasthumidity;
+            const dailyweatherCardBodyWindEl = document.createElement('p');
+            dailyweatherCardBodyWindEl.classList ='card-text';
+            dailyweatherCardBodyWindEl.textContent =dayRecord.forecastwindspeed;
+  
+  
+            dailyweatherCardHeaderEl.appendChild(dailyweatherCardHeaderParaEl);
+            dailyweatherCardBodyEl.appendChild(dailyweatherCardBodyTempEl);
+            dailyweatherCardBodyEl.appendChild(dailyweatherCardBodyHumidityEl);
+            dailyweatherCardBodyEl.appendChild(dailyweatherCardBodyWindEl);
+  
+            dailyweatherCardEl.appendChild(dailyweatherCardHeaderEl);
+            dailyweatherCardEl.appendChild(dailyweatherCardBodyEl);
+            dailyWeatherContainerEl.appendChild(dailyweatherCardEl);
+
+
+
+            
+
+
+            
+          }
 
 }
   
