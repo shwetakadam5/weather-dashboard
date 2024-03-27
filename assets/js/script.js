@@ -1,10 +1,12 @@
 const API_KEY = "6afdca3269d40e485ee98de1af3ed1db";
-const redirectUrl = './404.html';
+const redirectUrl = './servererrorpage.html';
 
 // Get the references of DOM Elements
 const searchFormEl = $('#search-form');
 const cityNameInputEl = $('#city-name-input');
 const searchContainerEl = document.querySelector('#search-container');
+
+const currentWeatherContainerEl = document.querySelector('#current-weather');
 
 
 //  Function that saves the list/array of city names for search history to the local storage 
@@ -35,6 +37,19 @@ function handleSearchFormSubmit(event) {
     
     event.preventDefault();
     let cityName;
+
+    let fetchedWeatherRecords = {
+               
+        currentcity: "",
+        currentdate: "",
+        currenttemp: "",
+        currentwindspeed: "",
+        currenthumidity: "",
+        currentlongitude: "",
+        currentlatitude: "",
+        dailyforecast :[],
+
+    };
     //  Read user input from the form
     if (cityNameInputEl.val().trim() != "") {
 
@@ -68,7 +83,7 @@ function handleSearchFormSubmit(event) {
         .then(function (response) {
 
             //If response is 404 redirecting to the error page.
-            if (response.status == 404) {                
+            if (!response.ok) {                
                 alert(`Error Msg: ${response.statusText}. Redirecting to error page.`);
                 location.href = (redirectUrl);
             } else {
@@ -91,6 +106,20 @@ function handleSearchFormSubmit(event) {
             console.log(data.wind.speed);
             console.log(data.main.humidity);
 
+            fetchedWeatherRecords = {
+               
+                currentcity: data.name,
+                currentdate: unixFormat,
+                currenttemp: data.main.temp,
+                currentwindspeed: data.wind.speed,
+                currenthumidity: data.main.humidity,
+                currentlongitude: data.coord.lon,
+                currentlatitude: data.coord.lat,
+                dailyforecast :[],
+
+            };
+
+            console.log(fetchedWeatherRecords);
             // Start of the fetch request for 5 day weather forecast.
             //  Read needed data from the response
             const locationLongitude = data.coord.lon;
@@ -143,7 +172,10 @@ function handleSearchFormSubmit(event) {
                     console.log("Display 5 unique date records")
                     console.log(uniqueDates);
                     console.log(uniqueDateDailyRecords.length);
+
+                    fetchedWeatherRecords.dailyforecast = uniqueDateDailyRecords;
                     console.log(uniqueDateDailyRecords);
+                    console.log(fetchedWeatherRecords);
 
                     // Loop logic end
                 });
@@ -164,22 +196,25 @@ function handleSearchFormSubmit(event) {
                 saveSearchHistoryToStorage(cityNames);
             }
 
-            printWeatherData();
+            printWeatherData(fetchedWeatherRecords);
             cityNameInputEl.val('');
         });
 
 }
 
 // Function to render/display the current weather details along with the search history buttons
-function printWeatherData() {
+function printWeatherData(fetchedWeatherRecords) {
+
+    console.log(fetchedWeatherRecords);
     const searchHistory = readSearchHistoryFromStorage();
 
     for (let historyObj of searchHistory) {
         $("#" + historyObj.id).remove();
-
     }
 
-    // ? Loop through projects and create project cards for each status
+    
+
+    // ? Loop through search histpry and create search history buttons for each city
     for (let historyObj of searchHistory) {
 
         // <li class="list-group-item">
@@ -192,7 +227,7 @@ function printWeatherData() {
         historyEl.setAttribute('id', historyObj.id);
 
         const historyBtnEl = document.createElement('button');
-        historyBtnEl.setAttribute('id', historyObj.id);
+        historyBtnEl.setAttribute('id', 'search-history-submit');
         historyBtnEl.setAttribute('type', 'click');
         historyBtnEl.classList = 'btn btn-primary form-control';
         historyBtnEl.textContent = "Search by " + historyObj.cityname;
@@ -202,13 +237,75 @@ function printWeatherData() {
         searchContainerEl.appendChild(historyEl);
 
     }
+    console.log(fetchedWeatherRecords);
+    createWeatherCard(fetchedWeatherRecords);
 }
+
+// ? Creates a weather card from the information passed in `weather` parameter and returns it.
+function createWeatherCard(fetchedWeatherRecords) {
+
+    console.log(fetchedWeatherRecords);   
+
+/* <div class="card weather-card my-3 text-black">
+    <div class ="card-header h4">City name
+        <p class="card-text">Date details</p>
+    </div>
+    
+    <div class="card-body">
+        <p class="card-text">Temperature</p>
+        <p class="card-text">Humidity</p>
+        <p class="card-text">Speed</p>
+    </div>
+
+</div>      */     
+
+if(fetchedWeatherRecords!=null){
+          const weatherCardEl = document.createElement('div');
+          weatherCardEl.classList = 'card weather-card my-3 text-black';
+         
+          const weatherCardHeaderEl = document.createElement('div');
+          weatherCardHeaderEl.classList = 'card-header h4';
+         
+          weatherCardHeaderEl.textContent = fetchedWeatherRecords.currentcity;
+           
+          const weatherCardHeaderParaEl = document.createElement('p');
+          weatherCardHeaderParaEl.classList ='card-text';
+          weatherCardHeaderParaEl.textContent = fetchedWeatherRecords.currentdate;
+
+          const weatherCardBodyEl = document.createElement('div');
+          weatherCardBodyEl.classList ='card-body';
+
+          const weatherCardBodyTempEl = document.createElement('p');
+          weatherCardBodyTempEl.classList ='card-text';
+          weatherCardBodyTempEl.textContent =fetchedWeatherRecords.currenttemp;
+          const weatherCardBodyHumidityEl = document.createElement('p');
+          weatherCardBodyHumidityEl.classList ='card-text';
+          weatherCardBodyHumidityEl.textContent =fetchedWeatherRecords.currenthumidity;
+          const weatherCardBodyWindEl = document.createElement('p');
+          weatherCardBodyWindEl.classList ='card-text';
+          weatherCardBodyWindEl.textContent =fetchedWeatherRecords.currentwindspeed;
+
+
+          weatherCardHeaderEl.appendChild(weatherCardHeaderParaEl);
+          weatherCardBodyEl.appendChild(weatherCardBodyTempEl);
+          weatherCardBodyEl.appendChild(weatherCardBodyHumidityEl);
+          weatherCardBodyEl.appendChild(weatherCardBodyWindEl);
+
+          weatherCardEl.appendChild(weatherCardHeaderEl);
+          weatherCardEl.appendChild(weatherCardBodyEl);
+          currentWeatherContainerEl.appendChild(weatherCardEl);
+
+}
+  
+  }
+
 
 //  Add event listener to the form element, listen for a submit event, and call the `handleSearchFormSubmit` function.
 searchFormEl.on('submit', handleSearchFormSubmit);
 
 //  Add event listener to the dynamically created button element, listen for a click event, and call the `handleSearchFormSubmit` function.
 searchFormEl.on('click', '.btn', handleSearchFormSubmit);
+//  $("#search-history-submit").on('click', '.btn', handleSearchFormSubmit);
 
 //  When the document is ready, print the weather data to the screen 
 $(document).ready(function () {
