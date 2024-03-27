@@ -153,23 +153,24 @@ function handleSearchFormSubmit(event) {
 
                    
 
-                    const dayWeatherRecords ={
-                        
-                        forecastdate: "",
-                        forecasttemp: "",
-                        forecastwindspeed: "",
-                        forecasthumidity: "",                      
-
-                    }
+                    
                     //loop thru the entire record and extract the first unique date record.
                     const dailyWeatherRecords = data.list;
                     const uniqueDates = [];
                     const uniqueDateDailyRecords = [];
 
                     for (const dailyrecord of dailyWeatherRecords) {
-                        // console.log(dailyrecord.dt);
+                        console.log(dailyrecord.dt);
                         const uniquedate = dayjs.unix(dailyrecord.dt).format('MMM D, YYYY');
-                        // console.log(uniquedate);
+                        console.log(uniquedate);
+                        const dayWeatherRecords ={
+                        
+                            forecastdate: "",
+                            forecasttemp: "",
+                            forecastwindspeed: "",
+                            forecasthumidity: "",                      
+    
+                        }
 
                         if (!uniqueDates.includes(uniquedate)) {
                             console.log("************************************************************");
@@ -181,12 +182,17 @@ function handleSearchFormSubmit(event) {
                             dayWeatherRecords.forecasttemp =dailyrecord.main.temp;
                             dayWeatherRecords.forecastwindspeed =dailyrecord.wind.speed;
                             //end
+                            console.log(dayWeatherRecords);
                             uniqueDateDailyRecords.push(dayWeatherRecords);
+                            console.log(uniqueDateDailyRecords);
                         }
 
                         if (uniqueDateDailyRecords.length === 5) {
+                            console.log("HI I AM HERRE")
                             break; // Stop once we have 5 unique records
                         }
+
+                        console.log("HI I NEVER ENTERED")
 
                     }
 
@@ -238,6 +244,7 @@ function printWeatherData(fetchedWeatherRecords) {
     }
 
     $('#current-weather').empty();    
+    $('#daily-weather').empty();    
 
     // ? Loop through search histpry and create search history buttons for each city
     for (let historyObj of searchHistory) {
@@ -347,8 +354,8 @@ console.log(fetchedWeatherRecords.dailyforecast);
              
             const dailyweatherCardHeaderParaEl = document.createElement('p');
             dailyweatherCardHeaderParaEl.classList ='card-text';
-            dailyweatherCardHeaderParaEl.textContent = dayRecord.forecastdate;
-  
+            dailyweatherCardHeaderParaEl.textContent = dayjs.unix(dayRecord.forecastdate).format('M/DD/YYYY');
+            
             const dailyweatherCardBodyEl = document.createElement('div');
             dailyweatherCardBodyEl.classList ='card-body';
   
@@ -371,12 +378,6 @@ console.log(fetchedWeatherRecords.dailyforecast);
             dailyweatherCardEl.appendChild(dailyweatherCardHeaderEl);
             dailyweatherCardEl.appendChild(dailyweatherCardBodyEl);
             dailyWeatherContainerEl.appendChild(dailyweatherCardEl);
-
-
-
-            
-
-
             
           }
 
