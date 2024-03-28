@@ -205,6 +205,7 @@ function printWeatherData(fetchedWeatherRecords) {
         historyBtnEl.classList = 'btn btn-secondary btn-custom form-control';
         historyBtnEl.textContent = historyObj.cityname;
         historyBtnEl.setAttribute('value', historyObj.cityname);
+        historyBtnEl.setAttribute('title', historyObj.cityname);
 
         historyEl.appendChild(historyBtnEl);
 
