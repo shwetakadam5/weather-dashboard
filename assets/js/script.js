@@ -34,7 +34,7 @@ function readSearchHistoryFromStorage() {
 // Once the weather details are retrieved , the weather information is displayed on the screen.
 // This function has two api calls 
 // https://api.openweathermap.org/data/2.5/weather?q=Melbourne,AU&appid=6afdca3269d40e485ee98de1af3ed1db
-// http://api.openweathermap.org/data/2.5/forecast?lat=-37.8547&lon=145.1853&appid=6afdca3269d40e485ee98de1af3ed1db
+// https://api.openweathermap.org/data/2.5/forecast?lat=-37.8547&lon=145.1853&appid=6afdca3269d40e485ee98de1af3ed1db
 
 function handleSearchFormSubmit(event) {
 
