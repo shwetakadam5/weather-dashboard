@@ -70,7 +70,7 @@ https://shwetakadam5.github.io/weather-dashboard/
 
 **Search by City and Search by History-City   : Functionality Demo**
 
-![alt text](assets/images/weather-dashboard-demo.mp4)
+![alt text](assets/images/weather-dashboard-demofunction.mp4)
 
 
 
