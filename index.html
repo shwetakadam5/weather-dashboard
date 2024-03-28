@@ -10,13 +10,15 @@
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Weather Dashboard</title>
 </head>
 
 <body>
     <header class="p-4 mb-4 text-center border-bottom border-5">
-        <h1 class="display-3">Weather Dashboard</h1>
+        <h1 class="display-3">Weather Dashboard </h1>
     </header>
 
     <main class="container-fluid">
@@ -43,17 +45,24 @@
 
             </div>
             <div class="col-md col-xl-8">
+
                 <!-- Displays the current and 5 day forecast weather details -->
                 <div class="row swim-lanes text-left justify-content-between">
                     <div class="row-12 row-lg-4 d-flex flex-row">
                         <div id="current-weather" class="w-100">
 
-                        </div>
-                    </div>
-                    <div class="row-12 row-lg-4 d-flex flex-row">
-                        <div id="daily-weather" class="d-flex flex-wrap">
+                                
 
                         </div>
+                    </div>
+                    <div class="row-12 row-lg-4 d-flex flex-row">  
+                        <div>
+                        <div id="daily-forecast-title" class="m-4 bg-white">
+                            <h4 class="fw-bold">5-Day Forecast :</h2>
+                          </div>                   
+                        <div id="daily-weather" class="d-flex flex-wrap">
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
