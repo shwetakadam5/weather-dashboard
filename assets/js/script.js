@@ -107,7 +107,7 @@ function handleSearchFormSubmit(event) {
             params.append(`appid`, `${API_KEY}`);
 
 
-            const dailyRequestUrl = new URL('http://api.openweathermap.org/data/2.5/forecast');
+            const dailyRequestUrl = new URL('https://api.openweathermap.org/data/2.5/forecast');
             dailyRequestUrl.search = params.toString();
 
             console.log(`Second API call url : ${dailyRequestUrl}`);
