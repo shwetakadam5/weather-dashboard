@@ -101,7 +101,7 @@ function handleSearchFormSubmit(event) {
             console.log(data.coord.lat);
             console.log(data.dt);
 
-            const unixFormat = dayjs.unix(data.dt).format('MMM D, YYYY, hh:mm:ss a');            
+            const unixFormat = dayjs.unix(data.dt).format('M/DD/YYYY');            
             console.log(unixFormat);
             console.log(data.name);
             console.log(data.main.temp);
@@ -161,7 +161,7 @@ function handleSearchFormSubmit(event) {
 
                     for (const dailyrecord of dailyWeatherRecords) {
                         console.log(dailyrecord.dt);
-                        const uniquedate = dayjs.unix(dailyrecord.dt).format('MMM D, YYYY');
+                        const uniquedate = dayjs.unix(dailyrecord.dt).format('M/DD/YYYY');
                         console.log(uniquedate);
                         const dayWeatherRecords ={
                         
@@ -172,7 +172,7 @@ function handleSearchFormSubmit(event) {
     
                         }
 
-                        if (!uniqueDates.includes(uniquedate)) {
+                        if (!uniqueDates.includes(uniquedate) && fetchedWeatherRecords.currentdate != uniquedate) {
                             console.log("************************************************************");
                             uniqueDates.push(uniquedate);
                              //start
