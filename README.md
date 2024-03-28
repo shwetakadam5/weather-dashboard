@@ -68,11 +68,6 @@ https://shwetakadam5.github.io/weather-dashboard/
 
 ![alt text](assets/images/weather-dashboard-weathercards-serverresponse.png)
 
-**Search by City and Search by History-City   : Functionality Demo**
-
-![alt text](assets/images/weather-dashboard-demofunction.mp4)
-
-
 
 ## Acceptance Criteria
 
