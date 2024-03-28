@@ -297,7 +297,7 @@ function createWeatherCard(fetchedWeatherRecords) {
             const dayRecord = dailyWeatherRecords[index];
 
             const dailyweatherCardEl = document.createElement('div');
-            dailyweatherCardEl.classList = 'card weather-card m-3 text-black';
+            dailyweatherCardEl.classList = 'card weather-card m-2 text-black';
 
 
 
@@ -329,7 +329,7 @@ function createWeatherCard(fetchedWeatherRecords) {
             }
 
             const dailyweatherCardHeaderBodyEl = document.createElement('p');
-            dailyweatherCardHeaderBodyEl.classList = 'h4 fw-bold';
+            dailyweatherCardHeaderBodyEl.classList = 'h5 fw-bold';
             dailyweatherCardHeaderBodyEl.textContent = dayjs.unix(dayRecord.forecastdate).format('M/DD/YYYY');
 
             const dailyweatherCardBodyTempEl = document.createElement('p');
