@@ -294,7 +294,7 @@ function createWeatherCard(fetchedWeatherRecords) {
  
 if(fetchedWeatherRecords!=null){
           const weatherCardEl = document.createElement('div');
-          weatherCardEl.classList = 'card weather-card my-3 text-black';
+          weatherCardEl.classList = 'card weather-card m-3 text-black';
          
           const weatherCardHeaderEl = document.createElement('div');
           weatherCardHeaderEl.classList = 'card-header h4';
@@ -345,7 +345,7 @@ console.log(fetchedWeatherRecords.dailyforecast);
             console.log(dayRecord.forecastwindspeed);
 
             const dailyweatherCardEl = document.createElement('div');
-            dailyweatherCardEl.classList = 'card weather-card my-3 text-black';
+            dailyweatherCardEl.classList = 'card weather-card m-3 text-black';
            
             const dailyweatherCardHeaderEl = document.createElement('div');
             dailyweatherCardHeaderEl.classList = 'card-header h4';
