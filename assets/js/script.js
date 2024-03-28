@@ -195,8 +195,8 @@ function printWeatherData(fetchedWeatherRecords) {
     $('#current-weather').empty();
     $('#daily-weather').empty();
 
-    $('#daily-forecast-title').css('display','none');
-    
+    $('#daily-forecast-title').css('display', 'none');
+
 
     // Loop through search histpry and create search history buttons for each city
     for (let historyObj of searchHistory) {
@@ -226,7 +226,7 @@ function createWeatherCard(fetchedWeatherRecords) {
 
     if (fetchedWeatherRecords != null) {
 
-        $('#daily-forecast-title').css('display','block');
+        $('#daily-forecast-title').css('display', 'block');
         //Create the current weather card
         const weatherCardEl = document.createElement('div');
         weatherCardEl.classList = 'card weather-card m-3 text-black';
@@ -240,27 +240,20 @@ function createWeatherCard(fetchedWeatherRecords) {
         //logic for weather icon assignment
         const weatherCardHeaderBodyIconEl = document.createElement('i');
         if (fetchedWeatherRecords.currentweathercond == "Clouds") {
-
             weatherCardHeaderBodyIconEl.classList = 'fas fa-cloud-sun';
-
         } else if (fetchedWeatherRecords.currentweathercond == "Rain") {
-
             weatherCardHeaderBodyIconEl.classList = 'fas fa-cloud-rain';
-
         } else if (fetchedWeatherRecords.currentweathercond == "Clear") {
-
-
             weatherCardHeaderBodyIconEl.classList = 'fas fa-sun';
-        } else {
-
+        }else if (fetchedWeatherRecords.currentweathercond == "Snow") {
+            weatherCardHeaderBodyIconEl.classList = 'far fa-snowflake';
+        }  else {
             weatherCardHeaderBodyIconEl.classList = 'far fa-sun';
         }
-
 
         const weatherCardHeaderBodyEl = document.createElement('p');
         weatherCardHeaderBodyEl.classList = 'h2 fw-bold';
         weatherCardHeaderBodyEl.textContent = fetchedWeatherRecords.currentcity + " (" + fetchedWeatherRecords.currentdate + ") ";
-
 
         const weatherCardBodyTempEl = document.createElement('p');
         weatherCardBodyTempEl.classList = 'card-text';
@@ -274,8 +267,6 @@ function createWeatherCard(fetchedWeatherRecords) {
         weatherCardBodyHumidityEl.classList = 'card-text';
         weatherCardBodyHumidityEl.textContent = "Humidity: " + fetchedWeatherRecords.currenthumidity + " %";
 
-
-
         weatherCardHeaderBodySpanEl.appendChild(weatherCardHeaderBodyIconEl);
         weatherCardHeaderBodyEl.appendChild(weatherCardHeaderBodySpanEl);
         weatherCardBodyEl.appendChild(weatherCardHeaderBodyEl);
@@ -283,28 +274,21 @@ function createWeatherCard(fetchedWeatherRecords) {
         weatherCardBodyEl.appendChild(weatherCardBodyWindEl);
         weatherCardBodyEl.appendChild(weatherCardBodyHumidityEl);
 
-
         weatherCardEl.appendChild(weatherCardBodyEl);
         currentWeatherContainerEl.appendChild(weatherCardEl);
 
-
         //Create the 5 day weather cards
         const dailyWeatherRecords = fetchedWeatherRecords.dailyforecast;
-
 
         for (let index = 0; index < dailyWeatherRecords.length; index++) {
 
             const dayRecord = dailyWeatherRecords[index];
 
             const dailyweatherCardEl = document.createElement('div');
-            dailyweatherCardEl.classList = 'card weather-card m-2 text-black';
-
-
+            dailyweatherCardEl.classList = 'card weather-card m-2 bg-custom text-custom';
 
             const dailyweatherCardBodyEl = document.createElement('div');
             dailyweatherCardBodyEl.classList = 'card-body';
-
-
 
             const dailyweatherCardHeaderBodySpanEl = document.createElement('span');
 
@@ -312,25 +296,20 @@ function createWeatherCard(fetchedWeatherRecords) {
             const dailyweatherCardHeaderBodyIconEl = document.createElement('i');
 
             if (dayRecord.forecastweathercond == "Clouds") {
-
                 dailyweatherCardHeaderBodyIconEl.classList = 'fas fa-cloud-sun';
-
             } else if (dayRecord.forecastweathercond == "Rain") {
-
                 dailyweatherCardHeaderBodyIconEl.classList = 'fas fa-cloud-rain';
-
             } else if (dayRecord.forecastweathercond == "Clear") {
-
-
                 dailyweatherCardHeaderBodyIconEl.classList = 'fas fa-sun';
+            }else if (dayRecord.forecastweathercond == "Snow") {
+                dailyweatherCardHeaderBodyIconEl.classList = 'far fa-snowflake';
             } else {
-
                 dailyweatherCardHeaderBodyIconEl.classList = 'far fa-sun';
             }
 
             const dailyweatherCardHeaderBodyEl = document.createElement('p');
             dailyweatherCardHeaderBodyEl.classList = 'h5 fw-bold';
-            dailyweatherCardHeaderBodyEl.textContent = dayjs.unix(dayRecord.forecastdate).format('M/DD/YYYY');
+            dailyweatherCardHeaderBodyEl.textContent = dayjs.unix(dayRecord.forecastdate).format('M/DD/YYYY') + " ";
 
             const dailyweatherCardBodyTempEl = document.createElement('p');
             dailyweatherCardBodyTempEl.classList = 'card-text';
@@ -344,8 +323,6 @@ function createWeatherCard(fetchedWeatherRecords) {
             dailyweatherCardBodyHumidityEl.classList = 'card-text';
             dailyweatherCardBodyHumidityEl.textContent = "Humidity: " + dayRecord.forecasthumidity + " %";
 
-
-
             dailyweatherCardHeaderBodySpanEl.appendChild(dailyweatherCardHeaderBodyIconEl);
             dailyweatherCardHeaderBodyEl.appendChild(dailyweatherCardHeaderBodySpanEl);
             dailyweatherCardBodyEl.appendChild(dailyweatherCardHeaderBodyEl);
@@ -353,14 +330,10 @@ function createWeatherCard(fetchedWeatherRecords) {
             dailyweatherCardBodyEl.appendChild(dailyweatherCardBodyWindEl);
             dailyweatherCardBodyEl.appendChild(dailyweatherCardBodyHumidityEl);
 
-
             dailyweatherCardEl.appendChild(dailyweatherCardBodyEl);
             dailyWeatherContainerEl.appendChild(dailyweatherCardEl);
-
         }
     }
-
-    
 }
 
 //  Add event listener to the form element, listen for a submit event, and call the `handleSearchFormSubmit` function.
