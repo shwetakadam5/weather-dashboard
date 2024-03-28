@@ -92,20 +92,20 @@ THEN I am again presented with current and future conditions for that city
 
 **Test 1**
 - Click on the Search Button in the Search for a City section:  Providing valid city name
-    User will be presented with Current weather conditions displaying :
+    - User will be presented with Current weather conditions displaying :
         1. City Name
         2. Date (Current date)
         3. Weather ICON
         4. Temperature in fahrenheit
         5. Wind speed in miles per hour-MPH
         6. Humidity in percentage
-   User will be presented with 5-day forecast of the weather conditions displaying : (5 weather cards)       
+   - User will be presented with 5-day forecast of the weather conditions displaying : (5 weather cards)       
         1. Date (Unique dates after the current date)
         2. Weather ICON
         3. Temperature in fahrenheit
         4. Wind speed in miles per hour-MPH
         5. Humidity in percentage
-    User will be presented with a search history button for the successfully searched city.
+    - User will be presented with a search history button for the successfully searched city.
     
 
 **Test 2**
@@ -140,9 +140,9 @@ _List your collaborators, if any, with links to their GitHub profiles:_ NA
 
 _If you used any third-party assets that require attribution, list the creators with links to their primary web presence in this section:_
 
-https://getbootstrap.com/docs/5.3/getting-started/introduction/
-https://day.js.org/
-https://fontawesome.com/icons/categories/weather
+- https://getbootstrap.com/docs/5.3/getting-started/introduction/
+- https://day.js.org/
+- https://fontawesome.com/icons/categories/weather
 
 _If you followed tutorials, include links to those here as well :_ NA
 
