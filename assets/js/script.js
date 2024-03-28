@@ -77,10 +77,8 @@ function handleSearchFormSubmit(event) {
         .then(function (data) {
 
             //converting date to the specific format and setting the date and rest values in the local object.
-            const unixFormat = dayjs.unix(data.dt).format('M/DD/YYYY');
-
-            console.log(data);
-            console.log(data.weather[0].main);
+            const unixFormat = dayjs.unix(data.dt).format('M/DD/YYYY');         
+            
             let fetchedWeatherRecords = {
 
                 currentcity: data.name,
@@ -118,18 +116,14 @@ function handleSearchFormSubmit(event) {
                 .then(function (response) {
                     return response.json();
                 })
-                .then(function (data) {
-
-                    console.log(data);
+                .then(function (data) {                    
 
                     //Logic to loop through the entire return data list of 5day-3hr forecast and extract the first unique date record and date records other than current date
                     const dailyWeatherRecords = data.list;
                     const uniqueDates = [];
                     const uniqueDateDailyRecords = [];
 
-                    for (const dailyrecord of dailyWeatherRecords) {
-
-                        console.log(dailyrecord.weather[0].main);
+                    for (const dailyrecord of dailyWeatherRecords) {                        
 
                         const uniquedate = dayjs.unix(dailyrecord.dt).format('M/DD/YYYY');
 
@@ -165,7 +159,7 @@ function handleSearchFormSubmit(event) {
                     const cityNames = readSearchHistoryFromStorage();
 
                     if (!cityNames.map(item => item.cityname).includes(fetchedWeatherRecords.currentcity)) {
-                        console.log(`City Value NOT present in the storage`);
+                        
                         const searchHistoryDetails = {
                             id: crypto.randomUUID(),
                             cityname: fetchedWeatherRecords.currentcity,
