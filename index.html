@@ -10,26 +10,23 @@
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
-
     <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Weather Dashboard</title>
 </head>
 
 <body>
     <header class="p-4 mb-4 text-center border-bottom border-5">
-        <h1 class="display-3">Weather Board</h1>
+        <h1 class="display-3">Weather Dashboard</h1>
     </header>
-    <!-- Start of code -->
+
     <main class="container-fluid">
         <div class="row">
             <div class="col-md col-xl-4 p-3">
                 <!-- Displays the search form and history -->
                 <div class="card mb-3">
-                    <!-- <div class="card-body"> -->
                     <h4 class="card-text">
                         Search for a City:
                     </h4>
-                    <!-- </div> -->
                     <form id="search-form">
                         <ul id="search-container" class="list-group list-group-flush">
                             <li class="list-group-item">
@@ -41,73 +38,29 @@
                                     class="btn btn-primary form-control">Search</button>
                             </li>
                         </ul>
-                        <!-- <div class="card-footer">
-                    <button type="submit" class="btn btn-primary form-control">
-                      Search
-                    </button>
-                  </div> -->
                     </form>
                 </div>
 
-            </div> <!-- col-md col-xl-4 div end-->
-
+            </div>
             <div class="col-md col-xl-8">
-                <!-- Displays the weather details Start -->
+                <!-- Displays the current and 5 day forecast weather details -->
                 <div class="row swim-lanes text-left justify-content-between">
                     <div class="row-12 row-lg-4 d-flex flex-row">
-                        <!-- <div id="to-do" class="card border-light mb-3 lane flex-grow-1"> -->
-                            <!-- <div class="card-header bg-white">
-                                <h2 class="card-title mb-1">Current Weather</h2>
-                            </div> -->
-                            <!-- <div class="card-body bg-light"> -->
-                                <div id="current-weather" class="w-100">
+                        <div id="current-weather" class="w-100">
 
-                                    <!-- <div class="card weather-card my-3 text-black">
-                            <div class ="card-header h4">City name
-                                <p class="card-text">Date details</p>
-                            </div>
-                            
-                            <div class="card-body">
-                                <p class="card-text">Temperature</p>
-                                <p class="card-text">Humidity</p>
-                                <p class="card-text">Speed</p>
-                            </div>
-
-                        </div>                      -->
-
-
-                                </div>
-                            <!-- </div> -->
-                        <!-- </div> -->
+                        </div>
                     </div>
                     <div class="row-12 row-lg-4 d-flex flex-row">
-                        <!-- <div id="in-progress" class="card border-light mb-3 lane d-flex flex-grow-1"> -->
-                            <!-- <div class="card-header bg-white">
-                                <h2 class="card-title mb-1">5 Day Forecast :</h2>
-                            </div> -->
-                            <!-- <div class="card-body bg-light"> -->
-                              
-                                    <div id="daily-weather" class="d-flex flex-wrap">
+                        <div id="daily-weather" class="d-flex flex-wrap">
 
-                                    </div>
-                                
-                            <!-- </div> -->
-                        <!-- </div> -->
+                        </div>
                     </div>
                 </div>
-
             </div>
-
-            <!-- Displays the weather details END-->
         </div>
-
         </div>
-
-        <div class="row"></div>
-
     </main>
 
-    <!-- End of code -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
@@ -115,7 +68,6 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
         integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
-
     <script src="./assets/js/script.js"></script>
 </body>
 
